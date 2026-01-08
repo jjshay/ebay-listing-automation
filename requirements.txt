@@ -1,0 +1,19 @@
+# eBay Listing Automation - Requirements
+
+# Core - Required
+requests>=2.31.0           # API calls
+python-dotenv>=1.0.0       # Environment variables
+Pillow>=10.0.0             # Image processing
+
+# Optional - AI Analysis
+openai>=1.0.0              # GPT-4 Vision
+anthropic>=0.7.0           # Claude
+google-generativeai>=0.3.0 # Gemini
+
+# Optional - Web interface
+flask>=2.3.0               # Web server
+flask-cors>=4.0.0          # CORS support
+
+# Optional - Data handling
+pandas>=2.0.0              # Spreadsheet processing
+gspread>=5.10.0            # Google Sheets
