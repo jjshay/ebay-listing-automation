@@ -1,0 +1,63 @@
+{
+  "sku": "SF-HOPE-001",
+  "title": "Shepard Fairey Hope Screen Print 2008 Edition 450/500 Hand Signed",
+  "category": {
+    "id": "550",
+    "name": "Art > Prints > Contemporary (1980-Now)"
+  },
+  "condition": {
+    "id": "3000",
+    "description": "Used - Excellent"
+  },
+  "price": {
+    "value": "1200.00",
+    "currency": "USD"
+  },
+  "quantity": 1,
+  "format": "FIXED_PRICE",
+  "description": "SHEPARD FAIREY - \"Hope\" Limited Edition Screen Print (2008)\n\nThis iconic work by Shepard Fairey became one of the most recognized images in American political history. Created during the 2008 presidential campaign, this piece exemplifies the artist's signature stencil style and has become a defining symbol of contemporary political art.\n\nDETAILS:\n• Artist: Shepard Fairey\n• Title: Hope\n• Medium: Screen Print on Cream Speckletone Paper\n• Size: 24\" x 36\"\n• Edition: 450/500\n• Year: 2008\n• Condition: Excellent\n\nCONDITION NOTES:\n• No visible damage, tears, or repairs\n• Colors remain vibrant with no fading\n• Edges clean and crisp\n• Stored flat in acid-free materials\n\nAUTHENTICITY:\n• Hand-signed by artist in pencil lower right\n• Edition numbering consistent with Obey Giant records\n• Paper stock and ink consistent with 2008 production run\n• Includes certificate of authenticity\n\nPROVENANCE:\n• Acquired directly from Obey Giant gallery\n• Single owner collection\n• Exhibition history available upon request\n\nSHIPPING:\n• Ships within 2 business days\n• Professional art packaging with acid-free materials\n• Full insurance included\n• International shipping available\n\nRETURNS:\n• 30-day money-back guarantee\n• 100% authenticity guaranteed\n• Full refund if not as described\n\nThank you for your interest in this exceptional piece of contemporary art history!",
+  "item_specifics": {
+    "Artist": "Shepard Fairey",
+    "Medium": "Screen Print",
+    "Size": "24\" x 36\"",
+    "Year": "2008",
+    "Edition Size": "500",
+    "Edition Number": "450",
+    "Signed": "Yes",
+    "Frame Included": "No",
+    "Style": "Contemporary Street Art",
+    "Subject": "Political / Portrait",
+    "Color": "Red, White, Blue, Black",
+    "Orientation": "Portrait"
+  },
+  "images": [
+    "https://storage.example.com/SF-HOPE-001/main.jpg",
+    "https://storage.example.com/SF-HOPE-001/signature.jpg",
+    "https://storage.example.com/SF-HOPE-001/edition.jpg",
+    "https://storage.example.com/SF-HOPE-001/corner_tl.jpg",
+    "https://storage.example.com/SF-HOPE-001/corner_tr.jpg",
+    "https://storage.example.com/SF-HOPE-001/corner_bl.jpg",
+    "https://storage.example.com/SF-HOPE-001/corner_br.jpg",
+    "https://storage.example.com/SF-HOPE-001/texture.jpg"
+  ],
+  "policies": {
+    "payment_policy_id": "PAY-12345",
+    "return_policy_id": "RET-30DAY",
+    "fulfillment_policy_id": "SHIP-ART-EXPEDITED"
+  },
+  "ai_analysis": {
+    "confidence_score": 0.94,
+    "authenticity_verified": true,
+    "market_position": "High demand, appreciating value",
+    "suggested_price_range": {
+      "low": 1100,
+      "high": 1400
+    },
+    "models_used": ["GPT-4V", "Claude", "Gemini", "Grok"]
+  },
+  "metadata": {
+    "generated_at": "2025-01-10T14:45:22Z",
+    "processing_time_seconds": 8.4,
+    "api_cost_usd": 0.08
+  }
+}
