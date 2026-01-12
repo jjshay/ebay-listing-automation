@@ -1,5 +1,10 @@
 # eBay Listing Automation
 
+![Python](https://img.shields.io/badge/python-3.9+-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![AI Models](https://img.shields.io/badge/AI%20Models-4-purple.svg)
+![eBay API](https://img.shields.io/badge/eBay-API%20Ready-yellow.svg)
+
 **Automatically create professional eBay listings from inventory data - AI-powered descriptions, pricing, and images.**
 
 ---
@@ -16,17 +21,31 @@ Turn your inventory spreadsheet into live eBay listings:
 
 ---
 
-## Quick Demo
+## Quick Start
 
 ```bash
+# Clone the repo
+git clone https://github.com/jjshay/ebay-listing-automation.git
+cd ebay-listing-automation
+
 # Install dependencies
 pip install -r requirements.txt
 
-# Run the demo
+# Run the interactive demo (no API keys needed!)
 python demo.py
 
-# See generated listings
+# Or run the visual showcase
+python showcase.py
+
+# Try with sample data
+python demo.py --inventory examples/sample_inventory.csv
 ```
+
+### Sample Files
+- `examples/sample_inventory.csv` - Sample product inventory
+- `examples/sample_product.json` - Single product config
+- `examples/artwork_main.jpg` - Sample product image
+- `sample_output/generated_listing.json` - Example output
 
 ---
 

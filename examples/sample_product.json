@@ -1,0 +1,26 @@
+{
+  "sku": "SF-HOPE-001",
+  "image_files": [
+    "examples/artwork_main.jpg",
+    "examples/artwork_signature.jpg",
+    "examples/artwork_detail.jpg"
+  ],
+  "known_info": {
+    "artist": "Shepard Fairey",
+    "title": "Hope",
+    "year": "2008"
+  },
+  "ai_analysis_override": false,
+  "pricing": {
+    "cost": 800.00,
+    "target_margin": 0.35,
+    "competitor_prices": [1150, 1280, 1350]
+  },
+  "listing_options": {
+    "format": "fixed_price",
+    "duration_days": 30,
+    "best_offer": true,
+    "auto_accept_threshold": 1080,
+    "auto_decline_threshold": 900
+  }
+}
