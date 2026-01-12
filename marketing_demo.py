@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Marketing Demo - eBay Listing Automation"""
+"""eBay Listing Automation - Marketing Demo"""
 import time
 import sys
 
@@ -7,141 +7,191 @@ try:
     from rich.console import Console
     from rich.panel import Panel
     from rich.table import Table
+    from rich.align import Align
     from rich import box
-    console = Console()
 except ImportError:
     print("Run: pip install rich")
     sys.exit(1)
 
-def pause(seconds=2):
-    time.sleep(seconds)
+console = Console()
 
-def clear():
-    console.clear()
+def pause(s=1.5):
+    time.sleep(s)
 
-# SCENE 1: Hook
-clear()
-console.print("\n" * 5)
-console.print("[bold yellow]         STILL WRITING EBAY LISTINGS BY HAND?[/bold yellow]", justify="center")
+def step(text):
+    console.print(f"\n[bold white on #1a1a2e]  {text}  [/]\n")
+    pause(0.8)
+
+# INTRO
+console.clear()
+console.print()
+intro = Panel(
+    Align.center("[bold yellow]eBAY LISTING AUTOMATION[/]\n\n[white]Photo to Complete Listing in 60 Seconds[/]"),
+    border_style="cyan",
+    width=60,
+    padding=(1, 2)
+)
+console.print(intro)
 pause(2)
 
-# SCENE 2: Problem
-clear()
-console.print("\n" * 3)
-console.print(Panel("""
-[bold red]YOU'RE WASTING HOURS:[/bold red]
+# STEP 1
+step("STEP 1: DROP PRODUCT PHOTO")
 
-   • 15 minutes per listing
-   • Copy-pasting the same fields
-   • Guessing prices
-   • Writing descriptions from scratch
-
-[dim]There's a faster way.[/dim]
-""", title="❌ Manual Listings = Lost Time", border_style="red", width=60), justify="center")
-pause(3)
-
-# SCENE 3: Solution
-clear()
-console.print("\n" * 3)
-console.print(Panel("""
-[bold green]DROP AN IMAGE. GET A LISTING.[/bold green]
-
-   ✓ AI reads your product image
-   ✓ Auto-generates title & description
-   ✓ Suggests optimal price
-   ✓ Uploads directly to eBay
-
-[bold]From photo to LIVE in 30 seconds.[/bold]
-""", title="✅ eBay Listing Automation", border_style="green", width=60), justify="center")
-pause(3)
-
-# SCENE 4: Example
-clear()
-console.print("\n\n")
-console.print("[bold cyan]              📸 WATCH THE MAGIC[/bold cyan]", justify="center")
-console.print()
+console.print("[dim]$[/] python ebay_lister.py [cyan]./photos/watch.jpg[/]\n")
 pause(1)
 
-console.print("[dim]                 Dropping image...[/dim]", justify="center")
-pause(1)
-console.print("[bold white]                 shepard-fairey-hope.jpg[/bold white]", justify="center")
-pause(2)
+console.print("  Loading image............", end="")
+pause(0.5)
+console.print(" [green]4032x3024 JPEG[/]")
 
-# SCENE 5: AI Analysis
-clear()
-console.print("\n\n")
-console.print("[bold magenta]              🤖 AI ANALYZING IMAGE...[/bold magenta]", justify="center")
-console.print()
-pause(1)
+console.print("  Detecting product........", end="")
+pause(0.6)
+console.print(" [green]Watch detected[/]")
 
-fields = [
-    ("Artist", "Shepard Fairey"),
-    ("Title", "Hope (2008)"),
-    ("Medium", "Screen Print"),
-    ("Size", '24" x 36"'),
-    ("Edition", "450/500"),
-    ("Condition", "Excellent"),
-    ("Price", "$1,200.00"),
+console.print("  Analyzing quality........", end="")
+pause(0.4)
+console.print(" [green]Excellent[/]")
+
+pause(0.8)
+
+photo = Panel(
+    "[bold]vintage_watch.jpg[/]\n\n"
+    "[dim]Resolution:[/]  4032 x 3024\n"
+    "[dim]Quality:[/]     [green]Excellent[/] (sharp, well-lit)\n"
+    "[dim]Background:[/]  [green]Clean[/]",
+    title="[cyan]Image Loaded[/]",
+    border_style="cyan",
+    width=50
+)
+console.print(photo)
+pause(1.5)
+
+# STEP 2
+step("STEP 2: AI VISION ANALYSIS")
+
+console.print("  [bold]GPT-4 Vision identifying product...[/]\n")
+pause(0.8)
+
+detections = [
+    ("Brand", "Omega Seamaster"),
+    ("Model", "Planet Ocean 600M"),
+    ("Reference", "232.30.42.21.01.001"),
+    ("Condition", "Excellent (9/10)"),
+    ("Case Size", "42mm"),
 ]
 
-table = Table(box=box.ROUNDED, width=50)
-table.add_column("Field", style="cyan")
-table.add_column("AI Detected", style="gold1")
+for label, value in detections:
+    console.print(f"  {label}:", end="")
+    pause(0.3)
+    console.print(f" [green]{value}[/]")
 
-for field, value in fields:
-    table.add_row(field, value)
-    console.clear()
-    console.print("\n\n")
-    console.print("[bold magenta]              🤖 AI ANALYZING IMAGE...[/bold magenta]", justify="center")
-    console.print()
-    console.print(table, justify="center")
-    pause(0.4)
+pause(1)
 
+# STEP 3
+step("STEP 3: MARKET RESEARCH")
+
+console.print("  Searching eBay sold listings...", end="")
+pause(0.8)
+console.print(" [green]47 comparables found[/]\n")
+
+market = Table(box=box.ROUNDED, width=55)
+market.add_column("Date", style="dim")
+market.add_column("Condition")
+market.add_column("Price", justify="right", style="green")
+
+market.add_row("Jan 10", "Excellent", "$4,850")
+market.add_row("Jan 8", "Very Good", "$4,600")
+market.add_row("Jan 5", "Excellent", "$4,925")
+market.add_row("Jan 3", "Good", "$4,200")
+
+console.print(market)
+pause(1)
+
+price = Panel(
+    "[bold]Price Analysis[/]\n\n"
+    "  Average Sale:     [bold green]$4,665[/]\n"
+    "  Recommended:      [bold cyan]$4,899[/]\n"
+    "  Min Best Offer:   [bold yellow]$4,400[/]",
+    border_style="green",
+    width=45
+)
+console.print(price)
+pause(1.5)
+
+# STEP 4
+step("STEP 4: GENERATE LISTING")
+
+console.print("  Creating SEO title.......", end="")
+pause(0.5)
+console.print(" [green]78/80 chars[/]")
+
+console.print("  Writing description......", end="")
+pause(0.5)
+console.print(" [green]Done[/]")
+
+console.print("  Auto-filling specifics...", end="")
+pause(0.5)
+console.print(" [green]12 fields[/]")
+
+pause(0.8)
+
+title = Panel(
+    "[bold]Omega Seamaster Planet Ocean 600M 42mm Black Dial Steel 232.30.42.21.01.001[/]\n\n"
+    "[dim]Characters:[/] 78/80 [green]OK[/]\n"
+    "[dim]SEO Score:[/]  [green]94/100[/]",
+    title="[green]Generated Title[/]",
+    border_style="green",
+    width=55
+)
+console.print(title)
+pause(1.5)
+
+# STEP 5
+step("STEP 5: ITEM SPECIFICS")
+
+specs = Table(box=box.SIMPLE, width=50)
+specs.add_column("Field", style="dim")
+specs.add_column("Value", style="white")
+
+specs.add_row("Brand", "Omega")
+specs.add_row("Model", "Seamaster Planet Ocean")
+specs.add_row("Case Size", "42mm")
+specs.add_row("Movement", "Automatic")
+specs.add_row("Case Material", "Stainless Steel")
+specs.add_row("Water Resistance", "600m")
+
+console.print(specs)
+console.print("\n  [green]>[/] All 12 specifics auto-filled")
+pause(1.5)
+
+# STEP 6
+step("STEP 6: READY TO LIST")
+
+final = Panel(
+    Align.center(
+        "[bold green]LISTING COMPLETE[/]\n\n"
+        "[bold]Price:[/] $4,899 (Best Offer enabled)\n"
+        "[bold]Shipping:[/] Free Priority + Insurance\n"
+        "[bold]Photos:[/] 8 images optimized\n\n"
+        "[dim]Schedule: Sunday 7PM (peak traffic)[/]"
+    ),
+    title="[bold yellow]READY[/]",
+    border_style="green",
+    width=50
+)
+console.print(final)
 pause(2)
 
-# SCENE 6: Result
-clear()
-console.print("\n" * 2)
-console.print(Panel("""
-[bold green]
-           ██╗     ██╗██╗   ██╗███████╗██╗
-           ██║     ██║██║   ██║██╔════╝██║
-           ██║     ██║██║   ██║█████╗  ██║
-           ██║     ██║╚██╗ ██╔╝██╔══╝  ╚═╝
-           ███████╗██║ ╚████╔╝ ███████╗██╗
-           ╚══════╝╚═╝  ╚═══╝  ╚══════╝╚═╝
-[/bold green]
-
-[bold]Listing #123456789012 is now LIVE on eBay![/bold]
-
-   Total time: [green]28 seconds[/green]
-
-   ebay.com/itm/123456789012
-""", title="📤 UPLOADED!", border_style="green", width=60), justify="center")
-pause(3)
-
-# SCENE 7: Stats
-clear()
-console.print("\n" * 2)
-console.print("[bold yellow]              📊 BATCH RESULTS TODAY[/bold yellow]", justify="center")
+# FOOTER
 console.print()
-
-stats = Table(box=box.ROUNDED, width=50)
-stats.add_column("Metric", style="cyan")
-stats.add_column("Value", style="green", justify="right")
-stats.add_row("Listings Created", "8")
-stats.add_row("Total Value", "$12,075")
-stats.add_row("Time Saved", "2 hours")
-stats.add_row("Accuracy", "100%")
-console.print(stats, justify="center")
-pause(3)
-
-# SCENE 8: CTA
-clear()
-console.print("\n" * 4)
-console.print("[bold yellow]          ⭐ AUTOMATE YOUR LISTINGS TODAY ⭐[/bold yellow]", justify="center")
-console.print()
-console.print("[bold white]         github.com/jjshay/ebay-listing-automation[/bold white]", justify="center")
-console.print()
-console.print("[dim]                     python demo.py[/dim]", justify="center")
+footer = Panel(
+    Align.center(
+        "[dim]GPT-4 Vision + eBay API[/]\n"
+        "[bold cyan]github.com/jjshay/ebay-listing-automation[/]"
+    ),
+    title="[dim]eBay Listing Automation v1.5[/]",
+    border_style="dim",
+    width=50
+)
+console.print(footer)
 pause(3)
