@@ -1,0 +1,3 @@
+{"version":3,"term":{"cols":80,"rows":24,"type":"xterm-256color"},"timestamp":1768199317,"command":"python3 marketing_demo.py","env":{"SHELL":"/bin/zsh"}}
+[0.016, "o", "Run: pip install rich\r\n"]
+[0.000, "x", "1"]

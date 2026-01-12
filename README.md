@@ -11,7 +11,9 @@
 
 **Automatically create professional eBay listings from inventory data - AI-powered descriptions, pricing, and images.**
 
-[![Demo](https://asciinema.org/a/kaTkeNMYe9BQjj9L.svg)](https://asciinema.org/a/kaTkeNMYe9BQjj9L)
+[![Demo](https://asciinema.org/a/lsIT0feupDDs41at.svg)](https://asciinema.org/a/lsIT0feupDDs41at)
+
+[![Watch Demo](https://img.shields.io/badge/▶%20Watch%20Demo-Click%20to%20Play-red?style=for-the-badge&logo=asciinema)](https://asciinema.org/a/lsIT0feupDDs41at)
 
 ---
 
