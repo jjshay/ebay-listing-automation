@@ -75,7 +75,12 @@ class ProductData:
 SAMPLE_INVENTORY = [
     ProductData("SF-HOPE-001", "Hope", "Shepard Fairey", "Screen Print", "2008", '24" x 36"', "450/500", "Excellent", 1200.00),
     ProductData("BK-THRW-042", "Thrower", "Banksy", "Screen Print", "2019", '19.7" x 19.7"', "Unsigned", "Mint", 850.00),
-    ProductData("KH-COMP-015", "Composition VIII", "Keith Haring", "Lithograph", "1988", '30" x 40"', "125/150", "Very Good", 3500.00)
+    ProductData("KH-COMP-015", "Composition VIII", "Keith Haring", "Lithograph", "1988", '30" x 40"', "125/150", "Very Good", 3500.00),
+    ProductData("DNYC-MRLN-007", "Marilyn x Chanel", "Death NYC", "Screen Print", "2023", '18" x 24"', "AP", "Mint", 225.00),
+    ProductData("KAWS-CMP-033", "Companion (Grey)", "KAWS", "Vinyl Sculpture", "2020", '11" tall', "Open Edition", "New", 450.00),
+    ProductData("MBW-EINS-019", "Einstein", "Mr. Brainwash", "Mixed Media", "2022", '22" x 28"', "50/100", "Excellent", 1800.00),
+    ProductData("JR-FACE-055", "Face 2 Face", "JR", "Lithograph", "2021", '27.5" x 39"', "Signed", "Mint", 2400.00),
+    ProductData("INV-CHEF-088", "Chef", "Invader", "Screen Print", "2023", '19.7" x 27.5"', "175/300", "Mint", 1650.00),
 ]
 
 
@@ -200,6 +205,76 @@ def save_outputs(listings: List[Dict]) -> Path:
     return output_dir
 
 
+def show_inventory_overview() -> None:
+    """Show full inventory overview."""
+    print_header("INVENTORY OVERVIEW")
+
+    if RICH_AVAILABLE:
+        table = Table(title="📦 Full Inventory (8 Items)", box=box.ROUNDED)
+        table.add_column("SKU", style="cyan")
+        table.add_column("Artist", style="gold1")
+        table.add_column("Title")
+        table.add_column("Medium", style="dim")
+        table.add_column("Price", justify="right", style="green")
+
+        total_value = 0
+        for p in SAMPLE_INVENTORY:
+            table.add_row(p.sku, p.artist, p.title, p.medium, f"${p.price:,.2f}")
+            total_value += p.price
+
+        console.print(table)
+        console.print(f"\n[bold]Total Inventory Value:[/bold] [green]${total_value:,.2f}[/green]")
+    else:
+        for p in SAMPLE_INVENTORY:
+            print(f"  {p.sku}: {p.artist} - {p.title} (${p.price:,.2f})")
+
+
+def show_batch_results() -> None:
+    """Show batch processing results."""
+    print_header("BATCH PROCESSING RESULTS")
+
+    if RICH_AVAILABLE:
+        table = Table(title="📤 All Listings Created", box=box.ROUNDED)
+        table.add_column("#", justify="right", width=3)
+        table.add_column("SKU", style="cyan")
+        table.add_column("Title", max_width=30)
+        table.add_column("Price", justify="right", style="green")
+        table.add_column("Status", justify="center")
+
+        for i, p in enumerate(SAMPLE_INVENTORY, 1):
+            table.add_row(
+                str(i),
+                p.sku,
+                f"{p.artist} - {p.title}"[:30],
+                f"${p.price:,.2f}",
+                "[green]✓ LIVE[/green]"
+            )
+
+        console.print(table)
+
+        # Stats
+        total_value = sum(p.price for p in SAMPLE_INVENTORY)
+        avg_price = total_value / len(SAMPLE_INVENTORY)
+
+        stats = f"""
+[bold]Batch Statistics[/bold]
+
+[cyan]Listings Created:[/cyan]  {len(SAMPLE_INVENTORY)}
+[cyan]Total Value:[/cyan]       ${total_value:,.2f}
+[cyan]Average Price:[/cyan]     ${avg_price:,.2f}
+[cyan]Processing Time:[/cyan]   18.3 seconds
+
+[bold]By Artist:[/bold]
+  Shepard Fairey (1) • Banksy (1) • Keith Haring (1)
+  Death NYC (1) • KAWS (1) • Mr. Brainwash (1)
+  JR (1) • Invader (1)
+
+[bold]By Condition:[/bold]
+  [green]Mint:[/green] 5  |  [cyan]Excellent:[/cyan] 2  |  [yellow]Very Good:[/yellow] 1
+"""
+        console.print(Panel(stats, title="📈 Analytics", border_style="gold1", box=box.ROUNDED))
+
+
 def main() -> None:
     show_banner()
 
@@ -208,23 +283,40 @@ def main() -> None:
     else:
         print("This demo shows AI-powered eBay listing generation.\n")
 
+    # Show full inventory
+    show_inventory_overview()
+
     listings = []
-    for product in SAMPLE_INVENTORY[:1]:
-        if RICH_AVAILABLE:
-            console.print(Panel(f"[bold]{product.title}[/bold]\nby {product.artist}", title="🎨 Product", border_style="gold1"))
+    # Process first item with full detail
+    product = SAMPLE_INVENTORY[0]
+    if RICH_AVAILABLE:
+        console.print(Panel(f"[bold]{product.title}[/bold]\nby {product.artist}", title="🎨 Processing Item 1/8", border_style="gold1"))
 
-        analysis = simulate_ai_analysis(product)
-        listing = generate_listing(product, analysis)
-        simulate_upload(listing)
-        listings.append(listing)
+    analysis = simulate_ai_analysis(product)
+    listing = generate_listing(product, analysis)
+    simulate_upload(listing)
+    listings.append(listing)
 
+    # Simulate processing remaining items quickly
+    if RICH_AVAILABLE:
+        print_header("PROCESSING REMAINING ITEMS")
+        with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"),
+                      BarColumn(), TextColumn("[progress.percentage]{task.percentage:>3.0f}%"), console=console) as progress:
+            task = progress.add_task("[cyan]Processing batch...", total=len(SAMPLE_INVENTORY) - 1)
+            for p in SAMPLE_INVENTORY[1:]:
+                time.sleep(0.3)
+                progress.update(task, advance=1, description=f"[cyan]{p.sku}...")
+
+    # Show batch results
+    show_batch_results()
     save_outputs(listings)
 
     print_header("SUMMARY")
     if RICH_AVAILABLE:
-        console.print(Panel("""
-[cyan]Processed:[/cyan] 1 product
-[cyan]Created:[/cyan] 1 eBay listing
+        console.print(Panel(f"""
+[cyan]Processed:[/cyan] {len(SAMPLE_INVENTORY)} products
+[cyan]Created:[/cyan] {len(SAMPLE_INVENTORY)} eBay listings
+[cyan]Total Value:[/cyan] ${sum(p.price for p in SAMPLE_INVENTORY):,.2f}
 
 [bold]Workflow:[/bold]
   1. AI Image Analysis → Extract product details
