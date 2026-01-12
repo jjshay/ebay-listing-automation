@@ -11,7 +11,7 @@
 
 **Automatically create professional eBay listings from inventory data - AI-powered descriptions, pricing, and images.**
 
-![Demo](demo.gif)
+![Demo Screenshot](assets/demo.png)
 
 ---
 
