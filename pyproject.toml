@@ -1,0 +1,69 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ebay-listing-automation"
+version = "1.0.0"
+description = "Automatically create professional eBay listings from inventory data - AI-powered descriptions, pricing, and images"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "John (JJ) Shay", email = "jjshay@example.com"}
+]
+keywords = ["ebay", "ecommerce", "automation", "ai", "listing", "inventory"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Office/Business",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "requests>=2.31.0",
+    "Pillow>=10.0.0",
+    "python-dotenv>=1.0.0",
+    "pandas>=2.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.0.0",
+    "flake8>=6.1.0",
+    "isort>=5.12.0",
+]
+ai = [
+    "openai>=1.0.0",
+    "anthropic>=0.7.0",
+    "google-generativeai>=0.3.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/jjshay/ebay-listing-automation"
+Repository = "https://github.com/jjshay/ebay-listing-automation"
+Issues = "https://github.com/jjshay/ebay-listing-automation/issues"
+
+[project.scripts]
+ebay-listing = "ebay_listing_automation:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.black]
+line-length = 100
+target-version = ['py39', 'py310', 'py311']
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+addopts = "-v --cov=. --cov-report=term-missing"

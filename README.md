@@ -1,11 +1,14 @@
 # eBay Listing Automation
 
+![CI](https://github.com/jjshay/ebay-listing-automation/workflows/CI/badge.svg)
 ![Python](https://img.shields.io/badge/python-3.9+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![AI Models](https://img.shields.io/badge/AI%20Models-4-purple.svg)
 ![eBay API](https://img.shields.io/badge/eBay-API%20Ready-yellow.svg)
 
 **Automatically create professional eBay listings from inventory data - AI-powered descriptions, pricing, and images.**
+
+![Demo](demo.gif)
 
 ---
 
