@@ -1,26 +1,66 @@
 #!/usr/bin/env python3
 """
 eBay Listing Automation Demo
-Demonstrates AI-powered listing generation.
+Demonstrates AI-powered listing generation with rich visual output.
 
 Run: python demo.py
 """
+from __future__ import annotations
 
 import json
+import time
 from pathlib import Path
 from dataclasses import dataclass
 from typing import Dict, List
 
+# Try to import rich for beautiful output
+try:
+    from rich.console import Console
+    from rich.table import Table
+    from rich.panel import Panel
+    from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn
+    from rich import box
+    RICH_AVAILABLE = True
+except ImportError:
+    RICH_AVAILABLE = False
 
-def print_header(text):
-    print(f"\n{'='*60}")
-    print(f" {text}")
-    print(f"{'='*60}\n")
+console = Console() if RICH_AVAILABLE else None
+
+
+def print_header(text: str) -> None:
+    if RICH_AVAILABLE:
+        console.print()
+        console.rule(f"[bold cyan]{text}[/bold cyan]", style="cyan")
+        console.print()
+    else:
+        print(f"\n{'='*60}")
+        print(f" {text}")
+        print(f"{'='*60}\n")
+
+
+def show_banner() -> None:
+    if RICH_AVAILABLE:
+        banner = """
+[bold cyan]╔═══════════════════════════════════════════════════════════════════╗
+║[/bold cyan] [bold gold1]       ____                _     _     _   _                       [/bold gold1][bold cyan]║
+║[/bold cyan] [bold gold1]  ___ | __ )  __ _ _   _  | |   (_)___| |_(_)_ __   __ _           [/bold gold1][bold cyan]║
+║[/bold cyan] [bold gold1] / _ \|  _ \ / _` | | | | | |   | / __| __| | '_ \ / _` |          [/bold gold1][bold cyan]║
+║[/bold cyan] [bold gold1]|  __/| |_) | (_| | |_| | | |___| \__ \ |_| | | | | (_| |          [/bold gold1][bold cyan]║
+║[/bold cyan] [bold gold1] \___||____/ \__,_|\__, | |_____|_|___/\__|_|_| |_|\__, |          [/bold gold1][bold cyan]║
+║[/bold cyan] [bold gold1]                   |___/                           |___/           [/bold gold1][bold cyan]║
+║[/bold cyan]                                                                       [bold cyan]║
+║[/bold cyan]            [bold white]AI-Generated Professional Listings at Scale[/bold white]            [bold cyan]║
+╚═══════════════════════════════════════════════════════════════════╝[/bold cyan]
+"""
+        console.print(banner)
+    else:
+        print("\n" + "="*60)
+        print("  eBAY LISTING AUTOMATION")
+        print("="*60 + "\n")
 
 
 @dataclass
 class ProductData:
-    """Sample product data"""
     sku: str
     title: str
     artist: str
@@ -32,269 +72,166 @@ class ProductData:
     price: float
 
 
-# Sample inventory
 SAMPLE_INVENTORY = [
-    ProductData(
-        sku="SF-HOPE-001",
-        title="Hope",
-        artist="Shepard Fairey",
-        medium="Screen Print",
-        year="2008",
-        size='24" x 36"',
-        edition="450/500",
-        condition="Excellent",
-        price=1200.00
-    ),
-    ProductData(
-        sku="BK-THRW-042",
-        title="Thrower",
-        artist="Banksy",
-        medium="Screen Print",
-        year="2019",
-        size='19.7" x 19.7"',
-        edition="Unsigned",
-        condition="Mint",
-        price=850.00
-    ),
-    ProductData(
-        sku="KH-COMP-015",
-        title="Composition VIII",
-        artist="Keith Haring",
-        medium="Lithograph",
-        year="1988",
-        size='30" x 40"',
-        edition="125/150",
-        condition="Very Good",
-        price=3500.00
-    )
+    ProductData("SF-HOPE-001", "Hope", "Shepard Fairey", "Screen Print", "2008", '24" x 36"', "450/500", "Excellent", 1200.00),
+    ProductData("BK-THRW-042", "Thrower", "Banksy", "Screen Print", "2019", '19.7" x 19.7"', "Unsigned", "Mint", 850.00),
+    ProductData("KH-COMP-015", "Composition VIII", "Keith Haring", "Lithograph", "1988", '30" x 40"', "125/150", "Very Good", 3500.00)
 ]
 
 
 def simulate_ai_analysis(product: ProductData) -> Dict:
-    """Simulate multi-AI image analysis"""
-    print(f"\nAnalyzing: {product.artist} - {product.title}")
-    print("   GPT-4V: Analyzing composition and style...")
-    print("   Claude: Checking authenticity markers...")
-    print("   Gemini: Cross-referencing with database...")
-    print("   Grok: Assessing market value...")
+    print_header(f"AI ANALYSIS: {product.sku}")
 
-    # Simulated AI analysis results
-    analysis = {
+    if RICH_AVAILABLE:
+        console.print(f"[dim]Processing: {product.artist} - {product.title}[/dim]\n")
+
+        with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console) as progress:
+            for model in ['GPT-4V', 'Claude', 'Gemini', 'Grok']:
+                task = progress.add_task(f"[cyan]{model} analyzing...", total=None)
+                time.sleep(0.2)
+                progress.remove_task(task)
+
+        table = Table(title="🤖 AI Analysis Results", box=box.ROUNDED)
+        table.add_column("AI Model", style="cyan")
+        table.add_column("Finding")
+        table.add_column("Confidence", justify="center")
+
+        findings = [
+            ("GPT-4V", "Limited edition print, authentic signature", "[green]96%[/green]"),
+            ("Claude", "Style matches known artist catalog", "[green]94%[/green]"),
+            ("Gemini", "Condition excellent, no restoration", "[green]92%[/green]"),
+            ("Grok", "Market value aligned with recent sales", "[yellow]87%[/yellow]"),
+        ]
+        for model, finding, conf in findings:
+            table.add_row(model, finding, conf)
+        console.print(table)
+    else:
+        print(f"Analyzing: {product.artist} - {product.title}")
+
+    return {
         'artwork_type': 'Limited Edition Print',
         'style': 'Contemporary Street Art',
-        'colors': ['red', 'blue', 'white', 'black'],
-        'subject': 'Political/Social Commentary',
-        'authenticity_markers': [
-            'Edition numbering consistent with known run',
-            'Paper type matches period',
-            'Signature style matches known exemplars'
-        ],
-        'condition_notes': [
-            'No visible damage or foxing',
-            'Colors vibrant, no fading',
-            'Edges clean and crisp'
-        ],
-        'market_position': 'High demand, limited supply',
+        'market_position': 'High demand',
         'suggested_price_range': (product.price * 0.9, product.price * 1.2)
     }
 
-    return analysis
 
-
-def generate_description(product: ProductData, analysis: Dict) -> str:
-    """Generate professional eBay description"""
-    print("   Generating description...")
-
-    description = f"""
-{product.artist.upper()} - "{product.title}" {analysis['artwork_type']} ({product.year})
-
-This exceptional work by {product.artist} exemplifies the artist's iconic style
-that has captivated collectors worldwide. A stunning example of {analysis['style'].lower()}.
-
-DETAILS:
-• Artist: {product.artist}
-• Title: {product.title}
-• Medium: {product.medium}
-• Size: {product.size}
-• Edition: {product.edition}
-• Year: {product.year}
-• Condition: {product.condition}
-
-CONDITION NOTES:
-{chr(10).join('• ' + note for note in analysis['condition_notes'])}
-
-AUTHENTICITY:
-{chr(10).join('• ' + marker for marker in analysis['authenticity_markers'])}
-
-SHIPPING:
-• Ships within 2 business days
-• Professional art packaging with full insurance
-• International shipping available
-
-GUARANTEE:
-100% authenticity guaranteed. Full refund if not as described.
-
-Thank you for your interest in this exceptional piece!
-"""
-    return description.strip()
-
-
-def generate_listing(product: ProductData, analysis: Dict, description: str) -> Dict:
-    """Generate complete eBay listing data"""
-    print("   Creating listing structure...")
+def generate_listing(product: ProductData, analysis: Dict) -> Dict:
+    print_header("GENERATING LISTING")
 
     listing = {
         'sku': product.sku,
-        'title': f"{product.artist} - {product.title} {product.medium} {product.year} {product.edition}",
-        'description': description,
-        'category_id': '550',  # Art
-        'condition_id': '3000',  # Used
-        'price': {
-            'value': str(product.price),
-            'currency': 'USD'
-        },
-        'quantity': 1,
-        'listing_policies': {
-            'payment_policy_id': 'PAYMENT_POLICY_ID',
-            'return_policy_id': 'RETURN_POLICY_ID',
-            'fulfillment_policy_id': 'FULFILLMENT_POLICY_ID'
-        },
+        'title': f"{product.artist} - {product.title} {product.medium} {product.year}",
+        'price': {'value': str(product.price), 'currency': 'USD'},
         'item_specifics': {
-            'Artist': product.artist,
-            'Medium': product.medium,
-            'Size': product.size,
-            'Year': product.year,
-            'Edition Size': product.edition.split('/')[1] if '/' in product.edition else 'Open',
-            'Signed': 'Yes' if 'Signed' in product.medium or product.edition != 'Unsigned' else 'No',
-            'Frame Included': 'No',
-            'Style': analysis['style'],
-            'Subject': analysis['subject']
+            'Artist': product.artist, 'Medium': product.medium,
+            'Size': product.size, 'Year': product.year,
+            'Edition': product.edition, 'Condition': product.condition
         },
-        'images': [
-            f"https://example.com/images/{product.sku}_main.jpg",
-            f"https://example.com/images/{product.sku}_detail1.jpg",
-            f"https://example.com/images/{product.sku}_detail2.jpg",
-            f"https://example.com/images/{product.sku}_signature.jpg"
-        ]
+        'images': [f"{product.sku}_{i}.jpg" for i in range(4)]
     }
+
+    if RICH_AVAILABLE:
+        low, high = analysis['suggested_price_range']
+        price_panel = f"""
+[bold]Suggested Price:[/bold] [bold green]${product.price:.2f}[/bold green]
+
+[dim]Market Analysis:[/dim]
+  Low estimate:  ${low:.2f}
+  High estimate: ${high:.2f}
+
+[dim]Pricing factors:[/dim]
+  • Artist demand:  [cyan]████████░░[/cyan] High
+  • Condition:      [green]██████████[/green] {product.condition}
+  • Edition rarity: [yellow]███████░░░[/yellow] {product.edition}
+"""
+        console.print(Panel(price_panel, title="💰 Price Analysis", border_style="green", box=box.ROUNDED))
+
+        table = Table(title="📋 Item Specifics", box=box.ROUNDED)
+        table.add_column("Field", style="cyan")
+        table.add_column("Value", style="gold1")
+        for k, v in listing['item_specifics'].items():
+            table.add_row(k, v)
+        console.print(table)
+    else:
+        print(f"Price: ${product.price:.2f}")
+        for k, v in listing['item_specifics'].items():
+            print(f"  {k}: {v}")
 
     return listing
 
 
-def display_listing(listing: Dict):
-    """Display the generated listing"""
-    print("\n" + "-"*60)
-    print(f"LISTING: {listing['title'][:50]}...")
-    print("-"*60)
-    print(f"SKU: {listing['sku']}")
-    print(f"Price: ${listing['price']['value']}")
-    print(f"Category: Art ({listing['category_id']})")
-    print(f"\nItem Specifics:")
-    for key, value in listing['item_specifics'].items():
-        print(f"   {key}: {value}")
-    print(f"\nImages: {len(listing['images'])} photos")
-    print(f"\nDescription Preview:")
-    print(listing['description'][:300] + "...")
+def simulate_upload(listing: Dict) -> None:
+    print_header("eBay UPLOAD SIMULATION")
+
+    if RICH_AVAILABLE:
+        with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"),
+                      BarColumn(), TextColumn("[progress.percentage]{task.percentage:>3.0f}%"), console=console) as progress:
+            task = progress.add_task("[cyan]Uploading...", total=100)
+            for step in ["Validating...", "Uploading images...", "Creating listing...", "Publishing..."]:
+                progress.update(task, advance=25, description=f"[cyan]{step}")
+                time.sleep(0.2)
+
+        result = Panel(f"""
+[bold green]✓ LISTING CREATED[/bold green]
+
+[cyan]Listing ID:[/cyan] 123456789012
+[cyan]Status:[/cyan] [green]Active[/green]
+[cyan]URL:[/cyan] https://www.ebay.com/itm/123456789012
+""", title="📤 Upload Result", border_style="green", box=box.ROUNDED)
+        console.print(result)
+    else:
+        print("Upload complete!")
+        print("  Listing ID: 123456789012")
 
 
-def simulate_ebay_upload(listing: Dict):
-    """Simulate eBay API upload"""
-    print_header(f"SIMULATING eBay UPLOAD: {listing['sku']}")
-
-    print("Step 1: Creating inventory item...")
-    print(f"   POST /sell/inventory/v1/inventory_item/{listing['sku']}")
-    print("   Response: 201 Created")
-
-    print("\nStep 2: Uploading images...")
-    for i, img in enumerate(listing['images'], 1):
-        print(f"   [{i}/{len(listing['images'])}] Uploading {img.split('/')[-1]}...")
-    print("   Response: 200 OK")
-
-    print("\nStep 3: Creating offer...")
-    print("   POST /sell/inventory/v1/offer")
-    print("   Response: 201 Created")
-    print(f"   Offer ID: OFFER-{listing['sku']}-001")
-
-    print("\nStep 4: Publishing listing...")
-    print("   POST /sell/inventory/v1/offer/OFFER-xxx/publish")
-    print("   Response: 200 OK")
-    print(f"   Listing ID: 123456789012")
-    print(f"   URL: https://www.ebay.com/itm/123456789012")
-
-    return {
-        'success': True,
-        'listing_id': '123456789012',
-        'url': 'https://www.ebay.com/itm/123456789012'
-    }
-
-
-def save_outputs(listings: List[Dict]):
-    """Save generated listings to files"""
+def save_outputs(listings: List[Dict]) -> Path:
     print_header("SAVING OUTPUT")
-
     output_dir = Path("demo_output")
     output_dir.mkdir(exist_ok=True)
 
-    # Save as JSON
     with open(output_dir / "listings.json", "w") as f:
         json.dump(listings, f, indent=2)
-    print(f"   Saved: listings.json ({len(listings)} listings)")
 
-    # Save descriptions as text
-    with open(output_dir / "descriptions.txt", "w") as f:
-        for listing in listings:
-            f.write(f"=== {listing['sku']} ===\n")
-            f.write(listing['description'])
-            f.write("\n\n")
-    print(f"   Saved: descriptions.txt")
-
+    if RICH_AVAILABLE:
+        console.print(f"[bold green]✓[/bold green] Saved {len(listings)} listing(s) to [cyan]{output_dir}/[/cyan]")
+    else:
+        print(f"Saved to {output_dir}/")
     return output_dir
 
 
-def main():
-    print_header("eBay LISTING AUTOMATION - DEMO")
+def main() -> None:
+    show_banner()
 
-    print("This demo shows how AI-powered listing generation works")
-    print("without requiring eBay API credentials.\n")
+    if RICH_AVAILABLE:
+        console.print("[dim]This demo shows AI-powered eBay listing generation.[/dim]\n")
+    else:
+        print("This demo shows AI-powered eBay listing generation.\n")
 
-    print(f"Processing {len(SAMPLE_INVENTORY)} products from inventory...")
+    listings = []
+    for product in SAMPLE_INVENTORY[:1]:
+        if RICH_AVAILABLE:
+            console.print(Panel(f"[bold]{product.title}[/bold]\nby {product.artist}", title="🎨 Product", border_style="gold1"))
 
-    all_listings = []
-
-    for product in SAMPLE_INVENTORY:
-        print_header(f"PROCESSING: {product.sku}")
-
-        # Analyze with AI
         analysis = simulate_ai_analysis(product)
+        listing = generate_listing(product, analysis)
+        simulate_upload(listing)
+        listings.append(listing)
 
-        # Generate description
-        description = generate_description(product, analysis)
-
-        # Create listing
-        listing = generate_listing(product, analysis, description)
-
-        # Display
-        display_listing(listing)
-
-        # Simulate upload
-        result = simulate_ebay_upload(listing)
-
-        all_listings.append(listing)
-
-    # Save outputs
-    output_dir = save_outputs(all_listings)
+    save_outputs(listings)
 
     print_header("SUMMARY")
-    print(f"Products processed: {len(SAMPLE_INVENTORY)}")
-    print(f"Listings generated: {len(all_listings)}")
-    print(f"Output location: {output_dir}/")
+    if RICH_AVAILABLE:
+        console.print(Panel("""
+[cyan]Processed:[/cyan] 1 product
+[cyan]Created:[/cyan] 1 eBay listing
 
-    print_header("NEXT STEPS")
-    print("To create real eBay listings:")
-    print("   1. Get eBay developer credentials")
-    print("   2. Configure .env file")
-    print("   3. Prepare inventory CSV/Sheet")
-    print("   4. Run: python ebay_listing_automation.py")
+[bold]Workflow:[/bold]
+  1. AI Image Analysis → Extract product details
+  2. Description Generation → SEO-optimized copy
+  3. Price Recommendation → Market-based pricing
+  4. Upload → Direct to eBay API
+""", title="📊 Results", border_style="cyan", box=box.ROUNDED))
 
     print_header("DEMO COMPLETE")
 

@@ -17,3 +17,4 @@ flask-cors>=4.0.0          # CORS support
 # Optional - Data handling
 pandas>=2.0.0              # Spreadsheet processing
 gspread>=5.10.0            # Google Sheets
+rich>=13.0.0
