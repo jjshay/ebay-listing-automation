@@ -52,6 +52,48 @@ python demo.py --inventory examples/sample_inventory.csv
 
 ---
 
+## Architecture
+
+```mermaid
+flowchart TB
+    subgraph Input
+        A[Inventory CSV] --> B[Data Parser]
+        C[Product Images] --> D[Image Loader]
+    end
+
+    subgraph Analysis["Multi-AI Analysis"]
+        B & D --> E1[GPT-4 Vision]
+        B & D --> E2[Claude Vision]
+        B & D --> E3[Gemini Vision]
+        B & D --> E4[Grok Vision]
+        E1 & E2 & E3 & E4 --> F[Analysis Consensus]
+    end
+
+    subgraph Generation["Content Generation"]
+        F --> G[Title Generator]
+        F --> H[Description Writer]
+        F --> I[Price Calculator]
+        F --> J[Category Mapper]
+    end
+
+    subgraph eBay["eBay API"]
+        G & H & I & J --> K[Listing Builder]
+        K --> L[Image Uploader]
+        L --> M[Inventory API]
+        M --> N[Publish Listing]
+    end
+
+    subgraph Output
+        N --> O[Live eBay Listing]
+        N --> P[Listing Report]
+    end
+
+    style A fill:#e1f5fe
+    style C fill:#e1f5fe
+    style O fill:#c8e6c9
+    style F fill:#f3e5f5
+```
+
 ## How It Works
 
 ```
